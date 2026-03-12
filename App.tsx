@@ -36,7 +36,10 @@ function App() {
             {/* == STORY CONTENT === */}
             <StoryContent isDark={isDark} />
             {/* == NEXT PAGE === */}
-            <NextPage isDark={isDark} />
+            <NextPage
+              isDark={isDark}
+              onPress={() => Alert.alert('Going to next Page')}
+            />
           </SafeAreaView>
         </SafeAreaProvider>
       </View>
