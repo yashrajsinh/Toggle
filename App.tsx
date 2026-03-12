@@ -8,7 +8,14 @@ import StoryContent from './src/components/StoryContent /StoryContent';
 import NextPage from './src/components/NextPage/NextPage';
 import { useState } from 'react';
 
-function App() {
+//Navigation
+import { NavigationContainer } from '@react-navigation/native';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
+//Screens
+import StoryPage from './src/screens/StoryPage';
+
+const Stack = createNativeStackNavigator();
+function App({ navigation }: any) {
   const [isDark, setDark] = useState(true);
   const bgImage = isDark
     ? require('./src/assets/images/morning.jpg')
@@ -17,33 +24,36 @@ function App() {
     setDark(!isDark);
   }
   return (
-    <ImageBackground
-      source={bgImage}
-      style={styles.background}
-      resizeMode="cover"
-      blurRadius={5}
-    >
-      {/* == Main Story background image */}
+    <NavigationContainer>
+      <ImageBackground
+        source={bgImage}
+        style={styles.background}
+        resizeMode="cover"
+        blurRadius={5}
+      >
+        {/* == Main Story background image */}
 
-      <View style={styles.overlay}>
-        <SafeAreaProvider>
-          <SafeAreaView style={styles.container}>
-            {/* == STORY HEADER === */}
-            <StoryHeader>
-              {/* == TOGGLE SWITCH === */}
-              <ToggleSwitch value={isDark} onChange={handleSwitch} />
-            </StoryHeader>
-            {/* == STORY CONTENT === */}
-            <StoryContent isDark={isDark} />
-            {/* == NEXT PAGE === */}
-            <NextPage
-              isDark={isDark}
-              onPress={() => Alert.alert('Going to next Page')}
-            />
-          </SafeAreaView>
-        </SafeAreaProvider>
-      </View>
-    </ImageBackground>
+        <View style={styles.overlay}>
+          <SafeAreaProvider>
+            <SafeAreaView style={styles.container}>
+              {/* == STORY HEADER === */}
+              <StoryHeader>
+                {/* == TOGGLE SWITCH === */}
+                <ToggleSwitch value={isDark} onChange={handleSwitch} />
+              </StoryHeader>
+              {/* == STORY CONTENT === */}
+              <StoryContent isDark={isDark} />
+              {/* == NEXT PAGE === */}
+              <NextPage isDark={isDark} onPress={() => Alert.alert('Hi')} />
+            </SafeAreaView>
+          </SafeAreaProvider>
+        </View>
+      </ImageBackground>
+      <Stack.Navigator>
+        <Stack.Screen name="Home" component={App} />
+        <Stack.Screen name="Second" component={StoryPage} />
+      </Stack.Navigator>
+    </NavigationContainer>
   );
 }
 
