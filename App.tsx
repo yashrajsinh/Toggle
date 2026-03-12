@@ -1,44 +1,62 @@
-/**
- * Sample React Native App
- * https://github.com/facebook/react-native
- *
- * @format
- */
+import { Alert, ImageBackground, StyleSheet, View } from 'react-native';
+import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
 
-import { NewAppScreen } from '@react-native/new-app-screen';
-import { StatusBar, StyleSheet, useColorScheme, View } from 'react-native';
-import {
-  SafeAreaProvider,
-  useSafeAreaInsets,
-} from 'react-native-safe-area-context';
+// Components
+import StoryHeader from './src/components/StoryHeader/StoryHeader';
+import ToggleSwitch from './src/components/ToogleSwitch/ToggleSwitch';
+import StoryContent from './src/components/StoryContent /StoryContent';
+import NextPage from './src/components/NextPage/NextPage';
+import { useState } from 'react';
 
 function App() {
-  const isDarkMode = useColorScheme() === 'dark';
-
+  const [isDark, setDark] = useState(true);
+  const bgImage = isDark
+    ? require('./src/assets/images/morning.jpg')
+    : require('./src/assets/images/night.jpg');
+  function handleSwitch() {
+    setDark(!isDark);
+  }
   return (
-    <SafeAreaProvider>
-      <StatusBar barStyle={isDarkMode ? 'light-content' : 'dark-content'} />
-      <AppContent />
-    </SafeAreaProvider>
-  );
-}
+    <ImageBackground
+      source={bgImage}
+      style={styles.background}
+      resizeMode="cover"
+      blurRadius={5}
+    >
+      {/* == Main Story background image */}
 
-function AppContent() {
-  const safeAreaInsets = useSafeAreaInsets();
-
-  return (
-    <View style={styles.container}>
-      <NewAppScreen
-        templateFileName="App.tsx"
-        safeAreaInsets={safeAreaInsets}
-      />
-    </View>
+      <View style={styles.overlay}>
+        <SafeAreaProvider>
+          <SafeAreaView style={styles.container}>
+            {/* == STORY HEADER === */}
+            <StoryHeader>
+              {/* == TOGGLE SWITCH === */}
+              <ToggleSwitch value={isDark} onChange={handleSwitch} />
+            </StoryHeader>
+            {/* == STORY CONTENT === */}
+            <StoryContent isDark={isDark} />
+            {/* == NEXT PAGE === */}
+            <NextPage isDark={isDark} />
+          </SafeAreaView>
+        </SafeAreaProvider>
+      </View>
+    </ImageBackground>
   );
 }
 
 const styles = StyleSheet.create({
+  background: {
+    flex: 1,
+  },
+
+  overlay: {
+    flex: 1,
+  },
+
   container: {
     flex: 1,
+    backgroundColor: 'rgba(250,249,246,0.2)',
+    padding: 10,
   },
 });
 
